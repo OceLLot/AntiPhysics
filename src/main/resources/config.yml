@@ -1,0 +1,4 @@
+Active: true    #Disable or enable plugin here (don't forget "/ap reload" after changes)
+
+worlds:    #Type here worlds, where plugin may disable physics, for example "world" or "world_nether"
+  - test

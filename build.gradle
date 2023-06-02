@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'net.ocejlot'
-version = '1.0-AntiPhysics'
+version = '1.1-AntiPhysics'
 
 repositories {
     mavenCentral()

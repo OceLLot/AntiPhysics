@@ -3,3 +3,6 @@ version: '${version}'
 main: net.ocejlot.antiphysics.AntiPhysics
 api-version: 1.19
 authors: [ OceJlot ]
+commands:
+  ap:
+    description: AntiPhysics command
