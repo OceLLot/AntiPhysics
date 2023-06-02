@@ -18,7 +18,7 @@ public class Deserializer extends JavaPlugin {
     public static void deserializeInfo(Player player) {
         player.sendMessage(MiniMessage.miniMessage().deserialize( """
                 
-                <#29f25f>You are running <#fabd52>AntiPhysics <#29f25f>version <#a7faf4>1.1 <#29f25f>build <#a7faf4>7
+                <#29f25f>You are running <#fabd52>AntiPhysics <#29f25f>version <#a7faf4>1.2 <#29f25f>build <#a7faf4>15
                 <#29f25f>By <#fabd52>OceJlot <#29f25f>(<underlined><#d4ff8a>Craftoriya<reset> <#29f25f>team)"""));
     }
 }

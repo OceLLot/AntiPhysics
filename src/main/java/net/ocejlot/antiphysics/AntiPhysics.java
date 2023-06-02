@@ -8,6 +8,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -34,9 +35,25 @@ public final class AntiPhysics extends JavaPlugin implements Listener, CommandEx
 
     @EventHandler
     public void onBlockPhysics(EntityChangeBlockEvent event) {
+        if (config.isActive()) return;
+        if(config.isBlockFall()) return;
+        if (config.allowedInAllWorlds()){
+            event.setCancelled(true);
+        }
         String worldName = event.getBlock().getWorld().getName();
-        if (!config.isActive() && !event.getBlock().getType().hasGravity()) return;
-        if (!config.getWorlds().contains(worldName)) return;
+        if (!event.getBlock().getType().hasGravity() || !config.getWorlds().contains(worldName)) return;
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onFluidFlow(BlockFromToEvent event){
+        if (config.isActive()) return;
+        if(config.isFluidFlow()) return;
+        if (config.allowedInAllWorlds()){
+            event.setCancelled(true);
+        }
+        String worldName = event.getBlock().getWorld().getName();
+        if (event.getBlock().getType().isSolid() || !config.getWorlds().contains(worldName)) return;
         event.setCancelled(true);
     }
 

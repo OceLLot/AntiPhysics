@@ -1,4 +1,8 @@
 Active: true    #Disable or enable plugin here (don't forget "/ap reload" after changes)
 
-worlds:    #Type here worlds, where plugin may disable physics, for example "world" or "world_nether"
-  - test
+FluidFlow: false    #Disable fluid flows (in specified worlds)
+
+BlockFall: false    #Disable blocks falls (in specified worlds)
+
+worlds:    #Type here worlds, where plugin may disable physics, for example "world" or "world_nether", or "all" for all worlds
+  - all
