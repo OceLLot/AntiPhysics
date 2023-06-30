@@ -1,6 +1,9 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
     id 'java'
     id("xyz.jpenilla.run-paper") version "2.0.1"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 group = 'net.ocejlot'
@@ -20,6 +23,8 @@ repositories {
 
 dependencies {
     compileOnly "io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT"
+    implementation"net.kyori:adventure-text-minimessage:4.13.1"
+    implementation "net.kyori:adventure-api:4.14.0"
 }
 
 def targetJavaVersion = 17
@@ -47,7 +52,16 @@ processResources {
     }
 }
 
-runServer{
+tasks {
+    shadowJar {
+        archiveFileName.set("ApiLinker.jar")
+        mergeServiceFiles()
+    }
+
+    build.dependsOn(shadowJar)
+}
+
+    runServer{
     minecraftVersion("1.19.4")
 }
 

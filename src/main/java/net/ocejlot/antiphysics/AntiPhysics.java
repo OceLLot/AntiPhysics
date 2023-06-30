@@ -8,7 +8,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockFromToEvent;
+import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -33,13 +33,34 @@ public final class AntiPhysics extends JavaPlugin implements Listener, CommandEx
     public void onDisable() {
     }
 
+
+    @EventHandler
+    public void onBlockPhysics(BlockBreakEvent event) {
+        if (config.isActive()) return;
+        if(config.isCollideBlocksUpdates()) return;
+
+        if (config.allowedInAllWorlds()){
+            if (!event.getBlock().isCollidable()) return;
+            event.setCancelled(true);
+
+        }
+
+        String worldName = event.getBlock().getWorld().getName();
+        if (!config.getWorlds().contains(worldName)) return;
+        event.setCancelled(true);
+    }
+
+
     @EventHandler
     public void onBlockPhysics(EntityChangeBlockEvent event) {
         if (config.isActive()) return;
         if(config.isBlockFall()) return;
+
         if (config.allowedInAllWorlds()){
+            if (!event.getBlock().getType().hasGravity()) return;
             event.setCancelled(true);
         }
+
         String worldName = event.getBlock().getWorld().getName();
         if (!event.getBlock().getType().hasGravity() || !config.getWorlds().contains(worldName)) return;
         event.setCancelled(true);
@@ -49,13 +70,17 @@ public final class AntiPhysics extends JavaPlugin implements Listener, CommandEx
     public void onFluidFlow(BlockFromToEvent event){
         if (config.isActive()) return;
         if(config.isFluidFlow()) return;
+
         if (config.allowedInAllWorlds()){
+            if (event.getBlock().getType().isSolid()) return;
             event.setCancelled(true);
         }
+
         String worldName = event.getBlock().getWorld().getName();
         if (event.getBlock().getType().isSolid() || !config.getWorlds().contains(worldName)) return;
         event.setCancelled(true);
     }
+
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, Command command, @NotNull String label, String[] args) {
@@ -64,7 +89,7 @@ public final class AntiPhysics extends JavaPlugin implements Listener, CommandEx
             if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
                 reloadConfig();
                 config.loadConfig();
-                sender.sendMessage(MiniMessage.miniMessage().deserialize("<#96f250>AntiPhysics configuration reloaded."));
+                sender.sendMessage(MiniMessage.miniMessage().deserialize("&aAntiPhysics configuration reloaded."));
                 return true;
             }
             if (args.length == 1 && args[0].equalsIgnoreCase("v")) {
@@ -79,7 +104,6 @@ public final class AntiPhysics extends JavaPlugin implements Listener, CommandEx
                 Deserializer.deserializeHelp((Player) sender);
                 return true;
             }
-
         }
         return false;
     }
@@ -88,6 +112,7 @@ public final class AntiPhysics extends JavaPlugin implements Listener, CommandEx
     public List<String> onTabComplete(@NotNull CommandSender sender, Command command, @NotNull String alias, String[] args) {
         if (command.getName().equalsIgnoreCase("ap")) {
             if (args.length == 1) {
+                if (!sender.hasPermission("antiphysics.all")) return null;
                 List<String> completions = new ArrayList<>();
                 completions.add("reload");
                 completions.add("v");

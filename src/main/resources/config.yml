@@ -4,5 +4,7 @@ FluidFlow: false    #Disable fluid flows (in specified worlds)
 
 BlockFall: false    #Disable blocks falls (in specified worlds)
 
+CollideBlocksUpdates: false    #Disable updates for collide blocks (like cactus breaks when block placed next to it)
+
 worlds:    #Type here worlds, where plugin may disable physics, for example "world" or "world_nether", or "all" for all worlds
   - all

@@ -10,6 +10,7 @@ public class AntiPhysicsConfig {
     private boolean active;
     private boolean fluidFlow;
     private boolean blockFall;
+    private boolean  collideBlocksUpdates;
     private List<String> worlds;
 
     public AntiPhysicsConfig(AntiPhysics plugin) {
@@ -23,6 +24,7 @@ public class AntiPhysicsConfig {
         active = config.getBoolean("Active");
         fluidFlow = config.getBoolean("FluidFlow");
         blockFall = config.getBoolean("BlockFall");
+        collideBlocksUpdates = config.getBoolean("CollideBlocksUpdates");
         worlds = config.getStringList("worlds");
     }
 
@@ -37,6 +39,8 @@ public class AntiPhysicsConfig {
     public boolean isBlockFall() {
         return blockFall;
     }
+
+    public boolean isCollideBlocksUpdates() { return collideBlocksUpdates; }
 
     public List<String> getWorlds() {
         return worlds;
